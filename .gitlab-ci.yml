@@ -1,0 +1,9 @@
+variables:
+  HOST: "103.239.165.40"
+
+deploy:
+  script:
+    - apt-get update -qq && apt-get install -y -qq lftp
+    - lftp -c "set ftp:ssl-allow no; open -u $FTP_USERNAME,$FTP_PASSWORD $HOST; mirror -Rnev ./ ./public_html --ignore-time --parallel=10 --exclude-glob .git* --exclude .git/"
+  only:
+    - master
